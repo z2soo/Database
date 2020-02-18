@@ -1,0 +1,387 @@
+###############함수 적용 SQL 연습문제 #######################
+conn scott/oracle
+문제1) EMP 테이블에서 scott의 사원번호, 성명, 담당업무(소문자로), 부서번호를 출력하여라.
+
+문제2) EMP 테이블에서 scott의 사원번호, 성명, 담당업무, 부서번호를 출력하여라.
+
+문제3) DEPT 테이블에서 컬럼의 첫 글자들만 대문자로 변화하여 모든 정보를 출력하여라.
+ 
+
+문제5) EMP 테이블에서 이름의 첫글자가 'K'보고 크고 'Y'보다 작은 사원의 사원번호, 이름, 업무, 급여, 부서번호를 출력하여라.
+
+
+문제6) EMP 테이블에서 부서가 20번인 사원의 사원번호, 이름, 이름의 자릿수, 급여, 급여의 자릿수를 출력하여라.
+
+
+문제7) EMP 테이블에서 이름 중 'L'자의 위치를 출력하여라.
+
+
+문제10) EMP 테이블에서 10번 부서의 사원에 대하여 담당 업무 중 좌측에 'A'를 삭제하고 급여 중 좌측의 1을 삭제하여 출력하여라.
+
+
+문제11) EMP 테이블에서 10번 부서의 사원에 대하여 담당 업무 중 우측에 'T'를 삭제하고 급여 중 우측의 0을 삭제하여 출력하여라.
+
+문제12) EMP 테이블에서 성명을 소문자로 바꾸어 출력하여라.
+
+문제13) EMP 테이블에서 JOB에 'A'를 '$'로 바꾸어 출력하여라.
+
+문제16) EMP 테이블에서 급여를 30으로 나눈 나머지를 구하여 출력하여라.
+
+문제18) EMP 테이블에서 현재까지의 근무일수가 몇 주 몇 일인가를 출력하여라.  단, 근무일수가 많은 사람순으로 출력하여라.
+
+문제19) EMP 테이블에서 10번 부서원이 현재까지의 근무 월수를 계산하여 출력하여라.
+
+문제20) EMP 테이블에서 10번 부서원의 입사 일자로부터 5개월이 지난 후 
+ 날짜를 계산하여 출력하여라.
+
+문제21) EMP 테이블에서 10번 부서원의 입사 일자로부터 돌아오는 금요일을 계산하여 출력하여라.
+
+
+문제22) EMP 테이블에서 입사한 달의 근무 일수를 계산하여 출력하여라. 
+    단, 토요일과 일요일도 근무일수에 포함한다.
+
+문제24] 사원의 이름, 입사일, 입사일자 , 입사 월 정보를 조회하라
+
+
+문제25] 사원의 이름, 입사일, 입사일자 , 입사일에서 1년 6개월 후의 날짜를 조회하라
+
+문제26) EMP 테이블에서 10번 부서 중 입사 일자를 '1 MAY 1981'와 '1998년 1월 1일'의 형태로 출력하여라.
+
+문제27) EMP 테이블에서 20번 부서 중 급여 앞에 $를 삽입하고 3자리마다 ,를 출력하여라.
+
+문제28) February 22, 1981에 입사한 사원의 이름, 업무, 입사일자를 출력하라.
+
+문제29) 현재가 년 중 몇번째 주인지 표시해 보자(단, 1월 1일 부터 첫째 일요일 까지를 1주차로 한다.)
+
+문제30) 현재의 날짜/시간을 년도두자리/월두자리/일자두자리(요일) 시각:분:초 AM/PM 의 형태로 나타낸다
+
+문제31)‘200407’이라는 년월을 표시하는 문자값에서 15개월 후의 년월을 문자로 표시해본다.
+
+문제32)다음 쿼리문에서 세기가 왜 다르게 검색되는지 살펴본다
+
+문제33) EMP 테이블의 사원이름, 급여, 보너스, 급여+보너스값조회.
+
+문제34) EMP 테이블에서 JOB이 ANALYST이면 급여 증가는 10%이고 JOB이 CLERK이면 급여 증가는 15%이고 JOB이 MANAGER이면 급여 증가는 20%입니다   . 다른 업무에 대해서는 급여 증가가 없다. 사원번호, 이름, 업무, 급여, 증가된 급여를 출력하여라
+
+문제35) EMP 테이블의 사원이름,  매니저 번호, 매니저번호가 null이면 ‘상위관리자’ 로표시하고, 매니저번호가 있으면 '담당'으로 표시
+
+문제36) EMP 테이블의 사원이름 , 업무, 업무가 'CLERK‘ 인 경우 NULL로  나오도록 한다.
+
+문제37) EMP테이블에서 이름, 보너스,연봉, 보너스가 null 아닌 경우 보너스를, 보너스가 null인 경우엔 연봉을, 모두 null인 경우엔  50으로 표시한다.
+
+문제38) decode함수를 이용하여 급여가 1000보다 작으면 ‘A’, 1000이상
+ 2500미만이면 ‘B’ , 2500이상이면 ‘C’로 표시하라.
+
+문제39) EMP 테이블에서 모든 SALESMAN에 대하여 급여의 평균, 최고액, 최저액, 합계를 구하여 출력하여라.
+ 
+
+문제41) EMP 테이블에 등록되어 있는 인원수, 보너스에 NULL이 아닌 인원수, 보너스의 평균을  조회하라
+
+문제42)  EMP 테이블에  등록되어 있는 부서의 수, 부서의 종류를 조회하라
+
+문제43) EMP 테이블에서 부서별로 인원수, 평균 급여, 최저 급여, 최고 급여, 급여의 합을 구하여 출력하여라.
+
+문제44) 각 부서별로 인원수, 급여의 평균, 최저 급여, 최고 급여, 급여의 합을 구하여 급여의 합이 많은 순으로 출력하여라.
+
+문제45)  업무별로 그룹지어 부서번호, 업무, 인원수, 급여의 평균, 급여의 합을 출력하여라.
+
+문제46) 업무별, 부서별로 그룹하여 결과를 부서번호, 업무, 인원수, 급여의 평균, 급여의 합을 출력하여라
+
+문제47) EMP 테이블에서 부서 인원이 4명보다 많은 부서의 부서번호, 인원수, 급여의 합을 출력하여라
+
+문제48) EMP 테이블에서 급여가 최대 2900 이상인 부서에 대해서 부서번호, 평균 급여, 급여의 합을 구하여 출력하여라.
+
+
+문제49) EMP 테이블에서 업무별 급여의 평균이 3000 이상인 업무에 대해서 업무면, 평균 급여, 급여의 합을 구하여 출력하여라.
+ 
+
+
+######################join##############################
+Q> 사원이름, 부서번호, 부서이름을 조회 결과로 생성
+select  ename, deptno, dname
+from emp, dept ;
+
+select  emp.ename, emp.deptno, dept.dname
+from emp, dept ;
+
+emp--14rows
+dept--4rows
+select  a.ename, a.deptno, b.dname
+from emp a, dept b ; ----56rows? 조인조건이 누락되어서 cartesian product로  수행됨
+
+select  a.ename, a.deptno, b.dname
+from emp a, dept b 
+where a.deptno = b.deptno;
+
+sql1999문법 :  natural join,  join ~using , join ~on
+
+conn  hr/oracle
+employees----- 107rows
+departments ----27rows
+select  a.last_name, a.department_id, b.department_name
+from employees a, departments b 
+where a.department_id = b.department_id;  --106 rows
+
+natural join : oracle 서버가 조인할 두 테이블의 동일한 이름의 컬럼값으로 equi join 수행
+동일한 이름의 컬럼앞에 소유자 테이블명이나 alias를 선언할 수 없음
+데이터 모델링을 잘못해서 두 테이블의 동일한 속성에 대해서 서로 다른 컬럼 타입을 다르게 선언한 경우 에러 발생합니다.
+데이터 모델링을 잘못해서 두 테이블의 동일한 속성에 대해서 컬럼이름이 다른 경우에는 조인이 수행되지 않습니다.
+
+select  a.last_name, a.department_id, b.department_name
+from employees a  natural join departments b ; ---error
+ 
+Q> 사원이름, 부서번호, 부서이름을 조회 결과로 생성
+select  a.last_name,  department_id, b.department_name
+from employees a  natural join departments b ;  ---32rows
+desc employees (department_id, manager_id)
+desc departments  (department_id, manager_id)
+
+join ~using: 조인할 두 테이블의 동일한 이름의 하나의 컬럼으로만 조인 수행
+select  a.last_name, a.department_id, b.department_name
+from employees a   join departments b  using (a.department_id); --error
+
+select  a.last_name, department_id, b.department_name
+from employees a   join departments b  using (department_id); --106rows
+
+select  a.last_name, department_id, b.department_name
+from employees a   join departments b  using (department_id)
+where a.department_id > 50 ; --error
+
+select  a.last_name, department_id, b.department_name
+from employees a   join departments b  using (department_id)
+where department_id > 50 ;
+
+
+#natural join은 데이터 모델링을 잘못해서 두 테이블의 동일한 속성에 대해서 컬럼이름이 다른 경우에는 조인이 수행되지 않습니다.
+conn soctt/oracle
+create table dept2 (deptid, dname, loc)
+as select * from dept;  --테이블의 구조와 row를 복제
+
+desc dept2
+select * from dept2;
+
+select a.ename, deptno, b.dname
+from emp a natural join dept2 b ;   --56rows (조인할 컬럼명이 다르므로 equi join이 아닌 cartesian join으로 수행됨)
+
+select a.ename, a.deptno, b.dname
+from emp a  join dept2 b on a.deptno = b.deptid ;  --14rows
+
+desc emp
+desc salgrade
+Q> 각 사원별로 급여와 사원의 급여 등급을 조회 출력하는 SQL 작성
+(non-equi join)
+select a.ename, a.sal, b.grade
+from emp a, salgrade b
+where a.sal between b.losal and b.hisal; 
+
+select a.ename, a.sal, b.grade
+from emp a join salgrade b on a.sal between b.losal and b.hisal; 
+
+
+Q> 각 사원별로 사번, 이름, 관리자번호, 관리자 이름을 조회 출력하는 SQL 작성
+(self join - 자기참조관계 테이블에서 PK와 FK컬럼간의 조인조건)
+select  a.empno, a.ename, a.mgr, b.ename 
+from emp a, emp b
+where a.mgr = b.empno;
+
+select  a.empno, a.ename, a.mgr, b.ename 
+from emp a join emp b on a.mgr = b.empno;
+
+conn hr/oracle
+desc employees
+desc departments
+desc locations
+Q> 사원이름, 소속부서이름, 소속부서의 위치(도시명)을 조회 출력하는 SQL (last_name, department_name, city)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####################review#############################
+
+단일행함수 :
+character function - instr, length, substr, trim, lpad, rpad, replace, translate,..
+number function - round, trunc, sign, mod ,...
+date function - months_between, add_months, next_day, last_day, extract, sysdate, current_date, current_timestamp,...
+conversion function - to_char, to_number, to_date('character', '변환할 fmt')
+기타 일반 함수 - nvl(arg1, arg2), nvl2(arg1, arg2, arg3), coalesce(arg1,arg2,.....arg N), nullif(arg1, arg2)
+조건처리함수 - decode()
+조건처리 표준 sql 표현식  - case ~ when~then~[when~then~]...[else~] end
+
+그룹함수 - count, min, max, sum, avg, stddev, variance
+그룹함수는 null을 계산에 포함하지 않습니다.
+count(*)
+count(column)
+count(distinct column)
+group by - 테이블의 레코드를 특정 컬럼 기준으로 그룹핑할때
+having -그룹핑함수의 조건을 선언
+
+select ~                     // 5
+from ~                     //  1
+where ~                    // 필터조건 2
+group by ~                // 3
+having ~                   // 4
+order by ~                  // 6
+
+group by 연산자 - rollup, cube, groupingsets
+
+집합연산자  : 2개이상의 select의 결과(resultset, cursor)를 단일 결과집합으로 만듬
+union all
+union
+minus
+intersect
+집합연산자와 함께 사용하는 select문들은 컬럼개수, 컬럼타입과 순서 일치
+
+함수 연습문제 9]
+employee’s last name, hire date,  급여 인터뷰 날짜를 다음의 형식으로 출력하시오
+입사후 6개월 후 월요일   “Monday, the Thirty-First of July, 2000.”
+conn hr/oracle
+alter session set nls_language=american;
+select last_name, hire_date, 
+        to_char(next_day(add_months(hire_date, 6), 'MON'),
+        'Day, "the" Ddspth "of" Month, YYYY.')   review
+from employees;
+
+함수 연습문제 10]
+alter session set nls_language=american;
+select last_name, hire_date,  to_char(hire_date,  'DAY')  day
+from employees;
+
+
+함수 연습문제 11]
+ the employees’ last names 과  commission 을 출력하시오
+커미션을 받지 않은 사원은 “No Commission.” 으로 출력하시오
+select last_name, nvl(to_char(commission_pct), 'No Commission') comm
+from employees;
+
+함수 연습문제 12]
+employees’ last name과 급여를 1000달러 단위로  asterisks를 함께 단일 컬럼값으로  출력하시오
+컬럼heading은 EMPLOYEES_AND_THEIR_SALARIES
+select  rpad(concat(last_name, ' '), length(last_name)+1+trunc(salary/1000), '*')
+        EMPLOYEES_AND_THEIR_SALARIES
+from employees;
+
+select concat(last_name,  rpad(' ', trunc(salary/1000)+1, '*'))
+        EMPLOYEES_AND_THEIR_SALARIES
+from employees;
+
+함수 연습문제 13] 조건처리
+select job_id , decode(job_id, 'AD_PRES', 'A',
+                                       'ST_MAN', 'B',
+                                       'IT_PROG', 'C',
+                                       'SA_REP', 'D',
+                                       'ST_CLERK', 'E',  '0') grade
+from employees;
+
+select job_id , case job_id when 'AD_PRES'   then  'A' 
+                                  when  'ST_MAN'  then  'B' 
+                                  when  'IT_PROG'  then  'C' 
+                                  when  'SA_REP'    then 'D' 
+                                  when   'ST_CLERK' then  'E' 
+                                  else  '0' end  grade
+from employees;
+
+그룹함수 연습문제4]
+select max(salary) "Maximum", min(salary) "Minimum"
+        ,sum(salary)  "Sum", avg(salary) "Average"
+from employees;
+
+그룹함수 연습문제5]
+select job_id, max(salary) "Maximum", min(salary) "Minimum"
+        ,sum(salary)  "Sum", avg(salary) "Average"
+from employees
+group by job_id;
+
+※ select절에 그룹함수 적용 컬럼과 그룹함수를 적용하지 않는 컬럼이 선언된 경우 룹함수를 적용하지 않는 컬럼은 반드시 group by 선언해야 합니다.
+select job_id, max(salary) "Maximum", min(salary) "Minimum"
+        ,sum(salary)  "Sum", avg(salary) "Average"
+from employees; --error
+ 
+select   max(salary) "Maximum", min(salary) "Minimum"
+        ,sum(salary)  "Sum", avg(salary) "Average"
+from employees
+group by job_id;
+#group by절에 선언된 컬럼이 select절에 선언될 수도 있고, 선언 안 할수도 있음
+
+그룹함수 연습문제6] 직무별 사원수를 출력하시오
+select job_id, count(*)
+from employees
+group by job_id;
+
+select job_id, count(job_id)
+from employees
+group by job_id;
+
+그룹함수 연습문제7] 관리자인 사원의 수를 출력하시오
+select count(distinct manager_id) "Number of Managers"
+from employees;
+
+
+그룹함수 연습문제8] Employees 사원중 최소 월급과 최대월급의 차이를 출력하시오
+select  max(salary)-min(salary) difference
+from employees;
+
+그룹함수 연습문제 9]	
+관리자별로 관리자의 관리를 받는 사원들(피관리자) 중에서 최저 급여가  6000초과인  관리자번호와 사원들의 최저 급여를 내림차순으로 출력하시오 (관리자가 없는사원은 제외하고)
+select
+from
+where  ---필터조건
+group by
+having  --그룹함수 조건
+order by ;
+
+select manager_id, min(salary)    -----5
+from employees                 ----1
+where   manager_id is not null  ----2
+group by manager_id              ---3
+having  min(salary) > 6000   -----4
+order by  2 desc;                     ---6
+
+
+그룹함수 연습문제 10] 전체 사원수, 2002, 2003, 2004, 2005년도에 입사한 사원수를 출력하시오
+컬럼 타이틀은 total, 2002, 2003, 2004, 2005로 출력하시오
+select count(*) total ,
+        sum(decode(to_char(hire_date, 'YYYY') , '2002', 1 )) "2002"
+from employees;
+
+select count(*) total ,
+        count(case to_char(hire_date, 'YYYY') when '2002' then 1  end) "2002"
+from employees;
+
+select count(*) total ,
+        count(decode(to_char(hire_date, 'YYYY') , '2002', 1 )) "2002",
+        count(decode(to_char(hire_date, 'YYYY') , '2003', 1 )) "2003"
+from employees;
+
+그룹함수 연습문제11] 직무별로 월급의 합계와   각 부서내에 직무별 월급의 합계를 아래 보기와 같이 출력하시오   컬럼 타이틀은 Job, Dept 20, Dept 50, Dept 80, Dept 90로 출력하시오
+
+select job_id,
+        sum(decode(department_id, 20, salary)) "Dept 20",
+        sum(decode(department_id, 50, salary)) "Dept 50",
+        sum(decode(department_id, 80, salary)) "Dept 80",
+        sum(decode(department_id, 90, salary)) "Dept 90",
+        sum(salary) "Total"
+from employees
+group by job_id;
+
+
+
+
+
