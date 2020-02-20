@@ -1,0 +1,152 @@
+spark.sql("select 1+1").show()
+
+spark.read.json("/home/tutor/data/2015-summary.json").createOrReplaceTempView("some_sql_view") # DF => SQL
+
+spark.sql("""
+SELECT DEST_COUNTRY_NAME, sum(count)
+FROM some_sql_view GROUP BY DEST_COUNTRY_NAME
+""").where("DEST_COUNTRY_NAME like 'S%'").where("`sum(count)` > 10").count() # SQL => DF
+
+##################9장 데이터 소스 ################################
+SparkSession.DataFrameReader.format(..).option(key, value).schema(...).load()
+spark.read =SparkSession.DataFrameReader
+
+csvFile = spark.read.format("csv") 
+  .option("header", "true") 
+  .option("mode", "FAILFAST") 
+  .option("inferSchema", "true") 
+  .load("/home/tutor/data/2010-summary.csv")
+
+csvFile.write.format("csv").mode("overwrite").option("sep", "\t")
+  .save("/home/tutor/data/my-tsv-file.tsv")
+
+csvFile.write.format("parquet").mode("overwrite")
+  .save("/home/tutor/data/my-parquet-file.parquet")
+
+C:\app\student\product\11.2.0\dbhome_1\jdbc\lib\ojdbc6.jar
+
+
+pyspark --jars "/tmp/jars/ojdbc6.jar" 
+
+query = "(select empno,ename,dname from emp, dept where emp.deptno = dept.deptno) emp"
+empDF = spark.read.format("jdbc").option("url", "jdbc:oracle:thin:@127.0.0.1:1521/orcl").option("dbtable", query).option("user", "scott").option("password", "oracle").option("driver", "oracle.jdbc.driver.OracleDriver").load()
+empDF.printSchema()
+empDF.show()
+
+
+ 
+#Spark home/conf 폴더의 spark-defaults.conf의 에 driver 클래스 위치 설정
+
+cd /opt/spark
+ls
+cd conf
+ls
+cp spark-defaults.conf.template  ./spark-defaults.conf
+ls
+
+vi spark-default.conf
+#다음 한줄을 마지막에 추가, 저장
+spark.driver.extraClassPath  /tmp/jars/ojdbc6.jar
+ 
+
+from pyspark.sql import SparkSession 
+spark = SparkSession.builder.appName("Python Spark SQL data source example").getOrCreate() 
+
+query = "(select empno,ename,dname from emp, dept where emp.deptno = dept.deptno) emp"
+
+df = spark.read.format("jdbc").option("url", "jdbc:oracle:thin:@127.0.01:1521/orcl").option("dbtable", query) .option("user", "scott").option("password", "oracle").option("driver", "oracle.jdbc.driver.OracleDriver").load()
+ df.show() 
+
+ 
+from pyspark.sql import SparkSession 
+spark = SparkSession.builder.appName("Python Spark SQL data source example").getOrCreate() 
+
+spark.read.text("/home/tutor/data/2010-12-01.csv").selectExpr("split(value, ',') as rows").show()
+######################조인##########################
+
+person = spark.createDataFrame([
+    (0, "Bill Chambers", 0, [100]),
+    (1, "Matei Zaharia", 1, [500, 250, 100]),
+    (2, "Michael Armbrust", 1, [250, 100])])\
+  .toDF("id", "name", "graduate_program", "spark_status")
+graduateProgram = spark.createDataFrame([
+    (0, "Masters", "School of Information", "UC Berkeley"),
+    (2, "Masters", "EECS", "UC Berkeley"),
+    (1, "Ph.D.", "EECS", "UC Berkeley")])\
+  .toDF("id", "degree", "department", "school")
+sparkStatus = spark.createDataFrame([
+    (500, "Vice President"),
+    (250, "PMC Member"),
+    (100, "Contributor")])\
+  .toDF("id", "status")
+  
+person.createOrReplaceTempView("person")
+graduateProgram.createOrReplaceTempView("graduateProgram")
+sparkStatus.createOrReplaceTempView("sparkStatus")
+  
+#내부조인
+joinExpression = person["graduate_program"] == graduateProgram['id']
+person.join(graduateProgram, joinExpression).show()
+
+joinType = "inner"
+person.join(graduateProgram, joinExpression, joinType).show()
+
+joinType = "outer"
+person.join(graduateProgram, joinExpression, joinType).show()
+
+
+joinType = "left_outer"
+graduateProgram.join(person, joinExpression, joinType).show()
+
+
+joinType = "right_outer"
+person.join(graduateProgram, joinExpression, joinType).show()
+
+
+gradProgram2 = graduateProgram.union(spark.createDataFrame([
+    (0, "Masters", "Duplicated Row", "Duplicated School")]))
+gradProgram2.createOrReplaceTempView("gradProgram2")
+
+joinType = "left_semi"
+graduateProgram.join(person, joinExpression, joinType).show()
+
+
+joinType = "left_anti"
+graduateProgram.join(person, joinExpression, joinType).show()
+
+
+joinType = "cross"
+graduateProgram.join(person, joinExpression, joinType).show()
+
+
+
+#####################################################
+19일 필기평가는 파이썬~머신러닝 20문제, 스파크 이해 및 활용 10문제
+    실기평가는 파이썬으로 3문제 (데이터 전처리, 웹 스크래핑, 머신러닝)
+
+
+###AWS 주피터  파이썬 버전 불일치 오류 => 가상환경에서 파이썬 버전을 6버전으로 ...############################################
+conda create --name spark_tutorial python=3.6.8 pyspark jupyter
+conda activate spark_tutorial
+jupyter-notebook --ip=0.0.0.0 --no-browser --port=8889
+
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("Test").config("spark.executor.instances", "1").config("spark.executor.cores", "1").config("spark.executor.memory", "2g").config("spark.driver.memory", "2g").getOrCreate()
+
+
+#스파크에서 사용자 정의함수 사용 가능하며, 반드시 등록후 사용해야 함
+udfExampleDF = spark.range(5).toDF("num")
+def power3(double_value):
+  return double_value ** 3     #함수 정의
+power3(2.0)   #함수 호출
+
+
+from pyspark.sql.functions import udf
+power3udf = udf(power3)   #스파크에서 사용자 정의함수 등록
+
+# 등록된 사용자 정의 함수 사용
+from pyspark.sql.functions import col
+ 
+udfExampleDF.select(power3udf(col("num"))).show(2)

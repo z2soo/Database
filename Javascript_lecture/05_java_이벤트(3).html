@@ -1,0 +1,44 @@
+<!-- 이벤트2 파일을 jquery 사용 -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+         
+        <script>
+        $(document).ready(function(){
+          $("#join").on("click", function(){
+             var pwd1 = $("#userpwd1").val()	  
+             var pwd2 = $("#userpwd2").val()
+                if(pwd1.length < 8 ){
+                    alert("비밀번호는 8자 이상이어야 합니다.")
+                }else if(pwd1!=pwd2){
+                    alert("비밀번호가 일치하지 않습니다.")
+              }  
+           });
+        });
+         
+        </script>
+    </head>
+    <body> 
+        <center>
+        이벤트 처리 <br>
+            <table border="1">
+            <tbody><tr><td colspan="2" align="center">회원가입
+            </td> 
+            </tr>
+            <tr><td width="150">아이디</td>
+            <td><input type="text" name="userid"></td></tr>
+            <tr><td width="150">비밀번호</td>
+            <td><input type="password" name="userpwd1" id="userpwd1"></td></tr>
+            <tr><td width="150">비밀번호 확인</td>
+            <td><input type="password" name="userpwd2" id="userpwd2"></td></tr>
+            <tr><td colspan="2" align="center">
+            <button id="join"> 회원가입 </button>
+            <input type="reset"> 
+            </td> </tr>
+            </tbody></table>
+        </center>
+    </body>
+</html>

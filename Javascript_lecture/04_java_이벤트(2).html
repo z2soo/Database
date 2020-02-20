@@ -6,17 +6,16 @@
     <title>Document</title>
 
     <script>
-        function myfunc(){
-          var pwd1 = document.getElementById("userpwd1").value;
-          var pwd2 = document.getElementById("userpwd2").value;
-          if(pwd1.length() < 8 ){
-             alert("비밀번호는 8자 이상이어야 합니다.")
-          }else if(pwd1!=pwd2){
-             alert("비밀번호가 일치하지 않습니다.")
-          }  
-        }
-        </script>
-
+      function myfunc(){
+        var pwd1 = document.getElementById("userpwd1").value;
+        var pwd2 = document.getElementById("userpwd2").value;
+        if(pwd1.length < 8 ){
+           alert("비밀번호는 8자 이상이어야 합니다.")
+        }else if(pwd1!=pwd2){
+           alert("비밀번호가 일치하지 않습니다.")
+        }  
+      }
+      </script>
 
 </head>
 <body>

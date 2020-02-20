@@ -1,0 +1,192 @@
+[Row(...), Row(...),..]
+
+DataFrame은 Row 타입의 레코드와 각 레코드에 수행할 연산 표현식을 나타내는 여러 컬럼으로 구성됩니다.
+
+스키마는 DataFrame의 컬럼명과 데이터타입을 정의합니다.
+스키마는 데이터소스로부터 얻거나 직접 정의할 수 있으며
+스키마를 직접 정의할 경우 StructType과 StructField 객체로 정의합니다.
+
+p126실습
+#스키마 정보 확인
+from pyspark.sql.types import StructField, StructType, StringType, LongType
+
+myManualSchema = StructType([
+  StructField("DEST_COUNTRY_NAME", StringType(), True),
+  StructField("ORIGIN_COUNTRY_NAME", StringType(), True),
+  StructField("count", LongType(), False, metadata={"hello":"world"})
+])
+df = spark.read.format("json").schema(myManualSchema).load("/home/tutor/data/2015-summary.json")
+df.printSchema()
+df.schema
+
+#컬럼  접근 방법 :
+1. df.col("count")  --- select()함수내에서 사용할 예정
+2. df.column("count")  ----- select()함수내에서 사용할 예정
+3. df.columns
+
+from pyspark.sql.functions import col, column
+df.columns     ---컬럼 정보 확인
+
+
+df.first()  ---첫번째 row객체 반환
+
+# Row객체 직접 생성
+from pyspark.sql import Row
+myRow = Row("Hello", None, 1, False)    
+myRow[0]  #Row객체의 컬럼값 ACCESS
+myRow[2]
+
+
+ 
+#ROW객체와 Schema를 직접 생성해서 DataFrame생성
+from pyspark.sql import Row
+from pyspark.sql.types import StructField, StructType, StringType, LongType
+myManualSchema = StructType([
+  StructField("some", StringType(), True),
+  StructField("col", StringType(), True),
+  StructField("names", LongType(), False)
+])
+myRow = Row("Hello", None, 1)
+myDf = spark.createDataFrame([myRow], myManualSchema)
+myDf.show()
+
+#DataFrame으로부터 selection 수행
+df.select("DEST_COUNTRY_NAME").show(2)
+
+df.select("DEST_COUNTRY_NAME", "ORIGIN_COUNTRY_NAME").show(2)
+
+from pyspark.sql.functions import expr, col, column
+df.select(
+    expr("DEST_COUNTRY_NAME"),
+    col("DEST_COUNTRY_NAME"),
+    column("DEST_COUNTRY_NAME")) 
+  .show(2)
+
+
+#표현식으로 DataFrame에 컬럼추가 트랜스포메이션 연산후 액션
+df.selectExpr(
+  "*", # all original columns
+  "(DEST_COUNTRY_NAME = ORIGIN_COUNTRY_NAME) as withinCountry").show(10)
+
+#표현식으로 DataFrame의 데이터로부터 집계
+df.selectExpr("avg(count)", "count(distinct(DEST_COUNTRY_NAME))").show(2)
+
+#상수 리터럴을 컬럼값으로 추가, 별칭 선언
+from pyspark.sql.functions import lit
+df.select(expr("*"), lit(1).alias("One")).show(2)
+
+#DataFrame에 컬럼추가
+df.withColumn("numberOne", lit(1)).show(2)
+
+#DataFrame에 컬럼명 변경하기
+--ddl (alter table ~ rename column <old-name> to <new-name>;
+df.withColumnRenamed("DEST_COUNTRY_NAME", "dest").columns
+
+--RDBMS에서 table명, column명은 naming 규칙 적용
+* 영문자 또는 _ 시작
+* 두번째 문자부터 숫자 허용
+* 특수문자 _, #만 허용
+* 키워드 안됨
+ 
+#컬럼 삭제
+df.drop("dest").columns
+
+#새 컬럼추가 (기존컬럼을 타입을 변경)
+df.withColumn("count2", col("count").cast("string"))
+df.printSchema()
+df.show(5)
+
+
+from pyspark.sql.types import StructField, StructType, StringType, LongType
+
+myManualSchema = StructType([
+  StructField("DEST_COUNTRY_NAME", StringType(), True),
+  StructField("ORIGIN_COUNTRY_NAME", StringType(), True),
+  StructField("count", LongType(), False, metadata={"hello":"world"})
+])
+df = spark.read.format("json").schema(myManualSchema).load("/home/tutor/data/2015-summary.json")
+ 
+# 필터처리 (where 조건)
+df.where("count > 10").show(5)
+df.filter(col("count") > 10 ).show(5)
+df.where("count > 10").where(col("ORIGIN_COUNTRY_NAME") !="Croatia")show(5)
+
+# DataFrame의 Row중 중복 Row제거하고 Unique한 Row만 count 또는 출력
+df.select("ORIGIN_COUNTRY_NAME", "DEST_COUNTRY_NAME").distinct().count()
+
+# Sampling(Random 추출)
+df.count() --256
+seed = 5
+withReplacement=False
+fraction=0.5
+df.sample(withReplacement ,fraction , seed ).count()
+
+dataframes = df.randomSplit([0.25, 0.75], seed)
+dataframes[0].count()
+dataframes[1].count()
+
+# sql 집합연산자 (union, union all, intersect, minus)
+#두 DataFrame을 union할 경우 동일한 스키마 와 컬럼개수가 동일해야 함
+from pyspark.sql import Row
+schema = df.schema
+newRows = [
+  Row("New Country", "Other Country", 5),
+  Row("New Country 2", "Other Country 3", 1)
+]
+parallelizedRows = spark.sparkContext.parallelize(newRows)
+newDF = spark.createDataFrame(parallelizedRows, schema)
+
+df.union(newDF)
+  .where("count = 1")
+  .where(col("ORIGIN_COUNTRY_NAME") != "United States") 
+  .show()
+
+#DataFrame에 저장된 데이터 정렬하기
+df.sort("count").show(5)
+df.orderBy("count", "DEST_COUNTRY_NAME").show(5)
+df.orderBy(col("count"), col("DEST_COUNTRY_NAME")).show(5)
+
+from pyspark.sql.functions import desc, asc
+df.orderBy(expr("count desc")).show(2)
+df.orderBy(col("count").desc(), col("DEST_COUNTRY_NAME").asc()).show(2)
+
+
+
+
+#Spark의 pyspark를 jupyter notebook에서 실행시키기위한 설정
+~$ conda activate
+(base) ~$ pip install pyspark
+(base) ~$ jupyter-notebook --ip=0.0.0.0 --no-browser --port=8XXX
+
+#pyspark의  jupyter notebook에서 SparkSession객체 생성하기
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("Test").config("spark.executor.instances", "1").config("spark.executor.cores", "1").config("spark.executor.memory", "2g").config("spark.driver.memory", "2g").getOrCreate()
+
+from pyspark.sql.types import StructField, StructType, StringType, LongType
+
+myManualSchema = StructType([
+  StructField("DEST_COUNTRY_NAME", StringType(), True),
+  StructField("ORIGIN_COUNTRY_NAME", StringType(), True),
+  StructField("count", LongType(), False, metadata={"hello":"world"})
+])
+df = spark.read.format("json").schema(myManualSchema).load("/home/tutor/data/2015-summary.json")
+df.count()
+
+
+######################################################
+df = spark.read.format("csv").option("header", "true").option("inferSchema", "true").load("/home/tutor/data/2010-12-01.csv")
+df.printSchema()
+df.createOrReplaceTempView("dfTable")
+
+
+
+
+
+
+
+
+
+
+
+
