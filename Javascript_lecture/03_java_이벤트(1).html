@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+    window.addEventListener("load", function(){
+    //alert("load end");
+    var btn = document.getElementById("btn")
+    btn.addEventListener("click", function(){
+       var span = document.getElementById("num")
+       var num = parseInt(span.innerHTML);
+       span.innerHTML = num+1
+       }, false);
+    }, false); 
+</script>
+
+</head>
+
+<!--이벤트 발생된 객체 (예] 버튼) - 이벤트 소스-->
+<!--이벤트 핸들러 - 이벤트 처리 (객체, 함수)-->
+<!--이벤트소스.addEventListener("이벤트", 이벤트핸들러, 이벤트캡처링여부);-->
+
+<body>
+    "이벤트 처리"
+    <br>
+    "Count: "
+    <span id="num">0</span>
+    <button id="btn">Push</button>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ 
+    <script>
+        // 자바 스크립트 코드 영역 : 함수 정의
+        // document.getElementById("memo").innerHTML="hello";
+    </script>
+</head>
+
+<!--자바 스크립트 데이터타입 : string, number, boolean, object-->
+<!--자바 스크립트 연산자 : 산술연산자, 비교연산자, 논리연산자-->
+
+<body>
+    <h2> 자바 스크립트 데이터 타입, 연산자 </h2>
+    <script>
+        // 자바 스크입트 코드 영역 : 실행 코드
+        var a = '100';
+        document.write(typeof(a)+"<br>"); // <br> 줄바꿈
+        var b = 100;
+        document.write(typeof(b)+"<br>");
+        // 타입이 다르면 내부적으로 형변환을 해서 값을 비교
+        document.write((a==b)+"<br>");
+        // === : 값과 타입을 동시에 비교하는 연산자
+        document.write((a===b)+"<br>");
+        var c = 0.5;
+        document.write(typeof(c)+"<br>");
+        var d = true;
+        document.write(typeof(d)+"<br>");
+        var e = [];
+        document.write(typeof(e)+"<br>");
+        var f = {};
+        document.write(typeof(f)+"<br>");
+        var g = { };
+        document.write(typeof(g)+"<br>");
+        var h = new Object();
+        document.write(typeof(h)+"<br>");
+        document.write(typeof(k)+"<br>");
+        document.write(typeof(null)+"<br>");
+    </script>
+
+<h2> 사용자로부터 표준 입력 받는 방법 </h2>
+<script>
+    // 사용자로부터 표준 입력 받는 방법 : prompt(), confirm() 
+    //var input = window.prompt("1~100 사이의 정수를 입력:");
+    // alert (typeof(input) + " " + input);
+    //var num = parseInt(input);
+    // alert (typeof(num));
+    //var answer = window.prompt("Game over?");
+    // alert (typeof(answer) + " " + answer);
+</script>
+
+    <p id = "memo"></p>
+</body>
+</html>

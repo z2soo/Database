@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function myfunc(){
+          var pwd1 = document.getElementById("userpwd1").value;
+          var pwd2 = document.getElementById("userpwd2").value;
+          if(pwd1.length() < 8 ){
+             alert("비밀번호는 8자 이상이어야 합니다.")
+          }else if(pwd1!=pwd2){
+             alert("비밀번호가 일치하지 않습니다.")
+          }  
+        }
+        </script>
+
+
+</head>
+<body>
+    <center>
+        이벤트 처리 <br>
+        <form action="data.jsp" method="GET">
+        <table border="1">
+        <tbody><tr><td colspan="2" align="center">회원가입
+        </td> 
+         </tr>
+        <tr><td width="150">아이디</td>
+        <td><input type="text" name="userid"></td></tr>
+        <tr><td width="150">비밀번호</td>
+        <td><input type="password" name="userpwd1"></td></tr>
+        <tr><td width="150">비밀번호 확인</td>
+        <td><input type="password" name="userpwd2"></td></tr>
+        <tr><td colspan="2" align="center">
+        <input type="button" value="회원가입" onclick="myfunc">
+        <input type="reset"> 
+        </td> </tr>
+        </tbody></table>
+        </form></center>
+</body>
+</html>

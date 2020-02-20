@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2> 조건문 반복문 작성 </h2>
+    <script>
+        // 조건문
+        if(조건식) {
+            실행문장;  
+        }else {
+            실행문장;
+        }
+        if(조건식) {
+            실행문장;  
+        }else if{
+            실행문장;
+        }else if {
+            실행문장;
+        }else {
+            실행문장;
+        }
+        // 반복문
+        for(값 초기화; 반복 조건; 반복시마다 실행되는 코드){
+            실행문장;
+        }
+    </script>
+
+    <script>
+        // 조건문 실습 : 입력받은 정수가 짝수 또는 홀수인지 출력
+        var test1 = window.prompt("정수를 입력하시오.");
+        if (test1 % 2 == 1){
+            alert(test1 + "은(는) 홀수입니다.");}
+        else { alert(test1 + "은(는) 짝수입니다.")}
+        
+        // 반복문 실습 : 2~9단 까지 가로로 출력
+        // var test2 = window.prompt("구구단을 실행할까요?")
+        alert ("2단부터 구구단을 실행합니다.")
+
+        for(var i=1;i<10;i++){
+             for(var dan=2;dan<10;dan++){
+                 document.write(dan+"X"+i+"="+(dan*i)+"&nbsp;&nbsp;&nbsp;  ");
+            } 
+            document.write("<br>");
+        } 
+    </script>
+
+</body>
+</html>
