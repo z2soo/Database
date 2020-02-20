@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <h2>재미있는 영화 목록</h2>
+    <ol>
+        {% for movie in movie_list %}
+        <!--넘겨받은 리스트 이름이 movies-->
+            <li>{{movie}}</li>
+        {% endfor %}
+    <!--반복문 끝낼 때 endfor 적어주기-->
+    </ol>
+</body>
+</html>

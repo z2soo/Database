@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <div style= "color:olive">
+            개인정보 유출란
+        </div>
+        <!--input 태그도 줄바꿈 자동 아님, br태그 사용-->
+        <!--id가 text인 것에 TEXT라고 라벨링-->
+        <label for="text">TEXT</label>
+        <!--input 태그에 text id 부여-->
+        <input type="text" id="text"><br>
+
+        <label for="number">NUMBER</label>
+        <input type="number" id="number"><br>
+
+        PASSWORD: <input type="password"><br>
+        EMAIL: <input type="email"><br>
+        DATE: <input type="date"><br>
+        
+        <!--Radio: 단일 선택-->
+        <p>성별을 선택해주세요</p>
+        <input type="radio"name="gender" value="1">남자<br>
+        <input type="radio"name="gender" value="2">여자<br>
+        <input type="radio"name="gender" value="3">기타<br>
+
+        <!--Checkbox: 다중 선택-->
+        <p>어려운 과목은?</p>
+        <input type="checkbox" name="option"value="1">Python<br>
+        <input type="checkbox" name="option"value="2">HTML<br>
+
+        <!--Select-->
+        <select name="country">
+            <option value ="1">한국</option><br>
+            <option value ="2">일본</option><br>
+            <option value ="3">중국</option><br>
+
+        </select>
+
+        <!--사용자 제출 버튼 생성-->
+        <input type="submit" value="제출할래용">
+        
+
+    </form>
+</body>
+</html>
