@@ -1,0 +1,276 @@
+###Selenium Chrome Driver 사용 브라우저 제어 #####
+from selenium import webdriver
+
+chrom_driver = webdriver.Chrome('C://Users/student/chromedriver/chromedriver.exe')
+chrom_driver.implicitly_wait(3)
+chrom_driver.get('https://google.com')
+chrom_driver.save_screenshot('./output/google_site.png')
+chrom_driver.close()
+
+######## PhantomJS 사용 브라우저 제어 ##########
+from selenium import webdriver
+url = "http://www.naver.com"
+browser = webdriver.PhantomJS('C:/Users/student/phantomjs/bin/phantomjs.exe')
+browser.implicitly_wait(3)  #3초 대기
+browser.get("http://www.naver.com") #url 요청
+browser.save_screenshot('./output/naver_site.png')  #실행된 브라우저화면 저장
+browser.quit()
+
+#####Selenium Chrome Driver 사용자 로그인 페이지 가져오기#######
+from selenium import webdriver
+from bs4 import BeautifulSoup
+
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--diable-dev-shm-usage')
+chrom_driver = webdriver.Chrome('C://Users/student/chromedriver/chromedriver.exe', options=options)
+chrom_driver.implicitly_wait(3)
+chrom_driver.get('https://www.hanbit.co.kr/member/login.html')
+
+#아이디, 패스워드 인수로 넣고 이벤트 발생시키기
+chrom_driver.find_element_by_name('m_id').send_keys('아이디')
+chrom_driver.find_element_by_name('m_passwd').send_keys('비밀번호')
+
+#로그인 버튼 클릭 이벤트
+chrom_driver.find_element_by_xpath("//*[@id='login_btn']").click()
+
+chrom_driver.get('https://www.hanbit.co.kr/myhanbit/myhanbit.html')
+html = chrom_driver.page_source
+soup = BeautifulSoup(html, 'html.parser')
+
+mileage = soup.select_one('.mileage_section1 > dd > span').text
+ecoin = soup.select_one('.mileage_section2 > dd > span').text
+print('마일리지 :' +mileage)
+print('이코인 :' +ecoin )
+
+rank = soup.select_one('.my_rating > p > span').text
+print('회원등급 :' +rank )
+
+##############################################
+
+https://logins.daum.net/accounts/signinform.do?url=https%3A%2F%2Fwww.daum.net%2F
+아이디 input 태그 의 name : id
+비밀번호 input 태그의 name : pw
+로그인 버튼  : loginBtn
+www.daum.net/dsp/cafe/_c21_/api/daumtop/v2/mycafe
+가입 카페 목록 가져오기 : ul.list_cafelist>li>a>span 의 내용
+
+from selenium import webdriver
+from bs4 import BeautifulSoup
+
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--diable-dev-shm-usage')
+chrom_driver = webdriver.Chrome('C://Users/student/chromedriver/chromedriver.exe', options=options)
+chrom_driver.implicitly_wait(3)
+chrom_driver.get('https://logins.daum.net/accounts/signinform.do?url=https%3A%2F%2Fwww.daum.net%2F')
+
+#아이디, 패스워드 인수로 넣고 이벤트 발생시키기
+chrom_driver.find_element_by_name('id').send_keys('아이디')
+chrom_driver.find_element_by_name('pw').send_keys('패스워드')
+
+#로그인 버튼 클릭 이벤트
+chrom_driver.find_element_by_xpath("//*[@id='loginBtn']").click()
+
+chrom_driver.get('http://top.cafe.daum.net/_c21_/my_cafe')
+html = chrom_driver.page_source
+#print(html)
+soup = BeautifulSoup(html, 'html.parser') 
+
+cafe_list = soup.select('strong.tit_info')
+print(len(cafe_list))
+names = []
+for span in cafe_list:
+    names.append(span.text)
+   
+for n in range(len(names)):
+    print(n)
+
+
+###############################################
+http://www.opinet.co.kr/user/main/mainView.do
+a의 id gnb_0_0   click이벤트 발생시키고 (자바스크립트 함수 분석이 필요함)
+
+
+from selenium import webdriver
+from bs4 import BeautifulSoup
+
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--diable-dev-shm-usage')
+chrom_driver = webdriver.Chrome('C://Users/student/chromedriver/chromedriver.exe', options=options)
+chrom_driver.implicitly_wait(3)
+chrom_driver.get('http://www.opinet.co.kr/user/main/mainView.do')
+
+chrom_driver.find_element_by_id("gnb_0_0").click()
+chrom_driver.get('http://www.opinet.co.kr/searRgSelect.do')
+html = chrom_driver.page_source
+soup = BeautifulSoup(html, 'html.parser') 
+############################################################
+client ID : WDURm8yjK4bzhW5NkL_j
+secret : MCumU69nyE
+
+# 네이버 검색 API예제는 블로그를 비롯 전문자료까지 호출방법이 동일하므로 blog검색만 대표로 예제를 올렸습니다.
+# 네이버 검색 Open API 예제 - 블로그 검색
+import os
+import sys
+import urllib.request
+import json
+
+client_id = "WDURm8yjK4bzhW5NkL_j"
+client_secret = "MCumU69nyE"
+
+encText = urllib.parse.quote("코타키나")
+
+url = "https://openapi.naver.com/v1/search/blog?query=" + encText # json 결과
+ 
+request = urllib.request.Request(url)
+request.add_header("X-Naver-Client-Id",client_id)
+request.add_header("X-Naver-Client-Secret",client_secret)
+response = urllib.request.urlopen(request)
+
+rescode = response.getcode()
+if(rescode==200):
+    response_body = response.read()
+    print(response_body.decode('utf-8'))
+else:
+    print("Error Code:" + rescode)
+
+
+##### 한국은행 경제 통계 시스템 open api #######
+from bs4 import BeautifulSoup
+import urllib.request as req
+import io
+
+key = '4WQ7X833TXC370SUTDX4'
+contentType = 'xml'
+startIndex = '1'
+endIndex = '100'
+
+url = 'http://ecos.bok.or.kr/api/KeyStatisticList/'+key+'/'+contentType+'/kr/'+startIndex+'/'+endIndex+'/'
+savename = 'C:/Temp/ecos.xml'
+req.urlretrieve(url, savename)
+
+xml = open(savename, 'r', encoding='utf-8').read()
+soup = BeautifulSoup(xml, 'xml')
+
+
+ecoList = []
+for itemList in soup.find_all('row') :
+    class_name = itemList.find('CLASS_NAME').string
+    class_name = '없음' if class_name is None else class_name
+    keystat_name = itemList.find('KEYSTAT_NAME').string
+    keystat_name = '없음' if keystat_name is None else keystat_name
+    data_value = itemList.find('DATA_VALUE').string
+    data_value = '없음' if data_value is None else data_value
+    cycle = itemList.find('CYCLE').string
+    cycle = '없음' if cycle is None else cycle
+    unit_name = itemList.find('UNIT_NAME').string
+    unit_name = '없음' if unit_name is None else unit_name
+    ecoList.append((class_name, keystat_name, data_value, cycle, unit_name))
+
+print('[ 100대 통계 지표 ]')
+for class_name, keystat_name, data_value, cycle, unit_name in ecoList :
+    print(class_name+','+keystat_name+','+data_value+','+cycle+','+unit_name)
+
+
+
+
+
+##########################################
+matrix = np.array([[[ 1,  2],
+                    [ 3,  4],
+                    [ 5,  6]],
+
+                   [[ 7,  8],
+                    [ 9, 10],
+                    [11, 12]]])
+
+# 두 번째와 세 번째 차원을 바꾸어 2x2x3 행렬로 만듭니다.
+matrix.transpose((0, 2, 1))
+
+
+ 
+
+선형대수학에서 고유값 분해와 특이값 분해가 차지하는 비중은 상당히 크다. 
+행렬의 대각화란 행렬을 대각요소만 가진 대각형렬로 만들어주는 것이다. 정방행렬의 대각화는 고유값분해(eigendecomposition)라고도 불린다. n x n 행렬(정방행렬) A 가 n개의 선형적으로 독립인 고유벡터들을 가지면,
+가 성립한다. 여기서 S는 고유벡터들을 열벡터(column vector)로 가지고 있는 고유벡터행렬이고, 는 고유값들을 대각요소에 가지고 있는 대각행렬로 고유값행렬이라고 불린다.
+
+https://blueskyvision.tistory.com/59
+
+#########################################
+
+
+########python, oracle DB 연동 ##################
+#DB세션정보객체 =cx_Oracle 모듈.connect(user명, password, url정보)
+#Cursor객체 생성
+#Cursor객체 = execute("sql문장")
+#pip install cx_Oracle
+#또는 
+#conda install -c https://conda.anaconda.org/anaconda cx_oracle
+#################################################
+
+import cx_Oracle
+import os
+os.putenv('NLS_LANG', 'KOREAN_KOREA.KO16MSWIN949')
+
+conn  =  cx_Oracle.connect("scott/oracle@127.0.0.1:1521/orcl")   #DB 연결 
+#result = pandas.read_sql("sql문장", con=conn)
+curs = conn.cursor()
+curs.execute("select * from emp")
+
+for row in curs:
+    print(row)
+
+curs.close()
+conn.close()   
+
+
+
+
+import cx_Oracle
+import os
+os.putenv('NLS_LANG', 'KOREAN_KOREA.KO16MSWIN949')
+
+conn  =  cx_Oracle.connect("scott/oracle@127.0.0.1:1521/orcl")   #DB 연결 
+#result = pandas.read_sql("sql문장", con=conn)
+curs = conn.cursor()
+curs.execute("select deptno, avg(sal) from emp group by deptno ")
+
+for row in curs:
+    print(row)
+
+curs.close()
+conn.close()  
+
+####################판다스
+import pandas as pd
+import cx_Oracle as co
+from datetime import datetime
+
+start_tm = datetime.now()
+
+#  DB Connecion
+dsn_tns = co.makedsn("127.0.0.1", "1521", service_name="orcl")
+conn = co.connect(user="scott", password="oracle", dsn=dsn_tns)
+
+# Get a dataframe
+query_result = pd.read_sql("select ename, job, sal from emp ", conn)
+print(query_result)
+print(type(query_result))
+
+# Close connection
+conn.close()
+
+end_tm = datetime.now()
+     
+print('ELAP: ', str(end_tm - start_tm))
+
+ 
+
+ 
+
+ 

@@ -1,0 +1,578 @@
+urllib.parse.urlencode()에 name과 value로 구성된 Query String을 만듦
+
+##data.jsp####################################################
+<%@ page contentType="text/html;charset=utf-8" %>
+<%@ page import="java.util.Date"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body> 
+<center>
+<%= request.getParameter("userid") %>님 반갑습니다.<br>
+<%= new Date() %> 오늘은 쒼나는 주말 시작입니다. 주말동안 ADSP 시험준비 철저...<br>
+ </center>
+</body>
+</html>
+ 
+
+#####파라미터를 url에 함께 전송 요청하고 응답 출력 실습 ##############
+import urllib.request 
+import urllib.parse
+
+params = urllib.parse.urlencode({'userid': '홍길동', 'userpwd': 1234 })
+print('URL 인코딩이 적용된 문자열 : %s' % params)
+url = 'http://70.12.116.160:8080/login/data.jsp?%s' % params
+with urllib.request.urlopen(url) as f :
+     print(f.read().decode('utf-8'))
+
+##########################################################
+requests 패키지 - request(method, url, **kwargs)를 이용하여 HTTP요청을 서버에 보내고 응답을 받아오는 기능 제공 (site-package라서 아나콘다에는 설치되어 있지만, 기본 python 기반으로 실행하려면 pip install requests 후에 사용해야 합니다.)
+
+requests.get(url, params, **kwargs)
+requests.post(url,  data,  json, **kwargs)
+requests.head(url, **kwargs)
+requests.put(url,  data, **kwargs)
+requests.delete(url, **kwargs)
+
+
+import requests 
+url = 'http://70.12.116.160:8080/login/login.html'
+r = requests.request('get', url )     #get방식으로 요청
+r.encoding = 'utf-8'
+print(type(r))
+if r.text :
+    print(r.text)
+else :
+    print("응답 컨텐츠가 없습니다.")
+
+r = requests.request('head', url )  #head방식으로 요청 (body내용이 아니라 header정보를 요청)
+r.encoding = 'utf-8'
+print(type(r))
+if r.text :
+    print(r.text)
+else :
+    print("응답 컨텐츠가 없습니다.")
+print(r.headers) #http 응답의 header 정보 출력
+
+
+params =  {'userid': '홍길동', 'userpwd': 1234 }
+url = 'http://70.12.116.160:8080/login/data.jsp'
+r = requests.request('post', url , data=params)   #post방식으로 요청
+r.encoding = 'utf-8'
+print(type(r))
+if r.text :
+    print(r.text)
+else :
+    print("응답 컨텐츠가 없습니다.")
+
+
+#####requests 패키지 이용 이미지를 가져와서 저장하기 실습 ######
+
+import requests 
+from PIL import Image    #Python Image Library  (pip install image  pip install pillow)
+from io import BytesIO  
+url = "http://uta.pw/shodou/img/28/214.png"
+r = requests.get(url)
+i = Image.open(BytesIO(r.content))
+print(type(i))
+i.save("test2.png")
+
+#####requests 패키지 이용 파라미터 전달, 응답 실습 ######
+dicdata =  {'userid': 'HongKilDong', 'userpwd': 1234 }
+url = 'http://70.12.116.160:8080/login/data.jsp'
+r = requests.get( url , params = dicdata)   #get방식으로 요청
+r.encoding = 'utf-8'
+print('요청 url 문자열 :', r.url)
+if r.text :
+    print(r.text)
+else :
+    print("응답 컨텐츠가 없습니다.")
+
+
+###########BeautifulSoup##################################
+HTML파일, XML 파일에서 데이터 추출하기 위한 라이브러리
+pip install beautifulsoup4
+HTML파일, XML 파일로부터 내용을 읽기 위해서는 파서(Parser)가 필요
+html.parser   #기본 파서
+lxml            #pip install lxml   (속도가 빠름)
+lxml-xml
+html5lib       #pip install html5lib  (속도 느림, 웹 브라우저와 동일한 방식으로 파싱 지원)
+BeautifulSoup 객체 생성할 때 파서를 함께 지정해야 합니다.
+태그에 접근할 때 . 연산자를 사용
+bs.태그명.태그명.태그명
+
+html_doc="""
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Test BeautifulSoup</title>
+</head>
+<body>
+<h1> BeautifulSoup 테스트...</h1>
+<img src="lyon.jpg" width=200 height=200>
+<p align="center"> 단락태그는 앞뒤 줄바꿈 수행 </p>
+</body>
+</html>
+"""
+from bs4 import BeautifulSoup
+bs = BeautifulSoup(html_doc, 'html.parser')
+print(type(bs))
+print(bs.prettify())
+print(type(bs.title.name), ':', bs.title.name)
+print(type(bs.title.string), ':',  bs.title.string)
+print(type(bs.h1.name) , ':', bs.h1.name)
+print(type(bs.h1.string), ':', bs.h1.string)
+print(bs.p['align'])
+print(bs.img['src'])
+print(bs.img.attrs)
+
+
+#############################################################
+html_doc="""
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Test BeautifulSoup</title>
+</head>
+<body>
+<section>
+<h1> BeautifulSoup 테스트 </h1>
+<div>
+<ol>
+<li>정직한 후보자</li>
+<li>작은 아씨들</li>
+<li>기생충</li>
+</ol>
+</div>
+<aside>기타 등등</aside>
+</section>
+</body>
+</html>
+"""
+
+from bs4 import BeautifulSoup
+bs = BeautifulSoup(html_doc, 'html.parser')
+print('[부모 태그]')
+print(bs.title.parent.name)   #title태그의 부모 태그이름
+print(bs.section.parent.name)  #section캐그의 부모 태그 이름
+print(bs.section.h1.string.parent.name)   #h1태그내용의 부모태그이름
+print('[형제 태그]')
+print(bs.section.div.next_sibling.name)  #div 태그의 다음 형제 태그이름
+print(bs.section.div.previous_sibling.name)  #div 태그의 이전 형제 태그이름
+print(bs.section.div.previous_sibling.previous_sibling.name)  #div 태그의 이전 이전 형제 태그이름
+li_tags = bs.section.div.ol.li
+print(li_tags) 
+count = 1
+for sibling in li_tags.next_siblings:
+    print('형제', count, ':', repr(sibling))
+    count = count+1
+
+print('자손 태그 개수 :' , len(tuple(bs.section.div.descendants)))
+
+
+########################################################
+BeautifulSoup는 CSS의 selector를 이용해서 문서로터 추출 함수 제공
+find_parents(), find_parent()
+find_next_siblings(), find_next_sibling()
+find_previous_siblings(), find_previous_sibling()
+find_all()  ,...
+
+
+html_doc="""
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Test BeautifulSoup</title>
+</head>
+<body>
+<h1> BeautifulSoup 테스트...</h1>
+<p align="left">  단락태그1  </p>
+<p align="center">  단락태그2  </p>
+<p align="right">  단락태그3 </p>
+<img src="lyon.jpg" width=200 height=200>
+<div>
+</div>
+<p > 단락태그4</p>
+</body>
+</html>
+"""
+from bs4 import BeautifulSoup
+bs = BeautifulSoup(html_doc, 'html.parser')
+print(bs.find_all('p'))      #태그명으로 추출
+print(bs.find('p'))
+print('---------------------')
+
+p_tags =bs.find_all('p')
+for tag in p_tags:
+    print(tag)
+
+print('---------------------')
+print(bs.find('p', align='center'))  #속성값으로 추출
+print(bs.find('p', attrs={'align': 'right'}))
+
+print('---------------------')
+p_tag = bs.find('p')
+print(len(p_tag.string.strip()))
+print(len(p_tag.string))
+print(p_tag.text.strip())
+print(p_tag.text)
+print(p_tag.get_text(strip=True))
+
+
+#############네이버 영화 평점 스크레이핑하기##########################
+from bs4 import BeautifulSoup
+import requests
+import re
+res = requests.get("https://movie.naver.com/movie/point/af/list.nhn?page=1")
+html = res.text 
+bs = BeautifulSoup(html , 'html.parser')
+titles = bs.select('.movie')
+points = bs.select('td.title>div>em')
+reviews = bs.select('td.title')
+
+movie_title =[]
+movie_point=[]
+movie_review=[]
+
+for dom in titles:
+     movie_title.append(dom.text)
+
+for dom in points:
+     movie_point.append(dom.text)
+
+for dom in reviews:
+     content = dom.contents[6]
+     content = re.sub("[\n\t]", '', content)
+     movie_review.append(content)
+
+comment_len = len(movie_title)
+for  m  in range(comment_len):
+    print('영화제목 : '+  movie_title[m])
+    print('평점 : '+  movie_point[m])   
+    print('리뷰 : '+  movie_review[m])
+    print('---------------------- ')
+
+########################################
+
+
+
+
+from bs4 import BeautifulSoup
+import requests
+import re
+import urllib.parse
+ 
+params = urllib.parse.urlencode({'domain':'BOOK', 'query':'파이썬'},  encoding='cp949')
+print('URL 인코딩이 적용된 문자열 : %s' % params)
+url = 'http://www.yes24.com/searchcorner/Search?%s' % params
+res = requests.get(url, params )
+#res = requests.get("http://www.yes24.com/searchcorner/Search?domain=BOOK&query=python")
+ 
+html = res.text 
+
+bs = BeautifulSoup(html , 'html.parser')
+
+titles = bs.select('p.goods_name.goods_icon > a > strong')
+book_titles =[]
+ 
+for dom in titles:
+     book_titles.append(dom.text) 
+        
+title_len = len(book_titles)
+for  m  in range(title_len):
+    print('도서명 : '+  book_titles[m])       
+
+
+###로그인된 페이지의 마일리지 정보 스크레이핑하기############
+from bs4 import BeautifulSoup
+import requests
+session = requests.session()
+login_info = { 'm_id' : '계정' , 'm_passwd':'패스워드'}
+
+url = "http://www.hanb.co.kr/member/login_proc.php"
+res = session.post(url, data=login_fino)
+res.raise_for_status()
+
+mypage_url = "http://www.hanbit.co.kr/myhanbit/myhanbit.html"
+res = session.get(mypage_url)
+bs = BeautifulSoup(res.text , 'html.parser')
+mileage = bs.select_one('dl.mileage_section1 span').get_text()
+ecoin = bs.select_one('dl.mileage_section2 span').get_text()
+print('마일리지' , mileage)
+print('이코인', ecoin)
+
+
+##########################################################
+https://www.weather.go.kr/weather/forecast/mid-term-rss3.jsp
+https://www.weather.go.kr/weather/forecast/mid-term-rss3.jsp?stnId=108
+
+
+from bs4 import BeautifulSoup
+import urllib.request as req
+import io
+url = 'https://www.weather.go.kr/weather/forecast/mid-term-rss3.jsp?stnId=108'
+savename = 'forecast.xml'
+req.urlretrieve(url, savename)
+xml = open(savename, "r", encoding="utf-8").read()
+bs = BeautifulSoup(xml , 'html.parser')
+info={}
+for location in bs.find_all("location"):
+    loc = location.find('city').string  
+    min_w = location.find_all('tmn')
+    max_w = location.find_all('tmx')
+    weather  = [a.string +"~"+ b.string for a, b in zip(min_w, max_w)]
+    if not (loc in info):
+        info[loc] = []
+    for data in weather:
+        info[loc].append(data)
+    print(info)
+
+  
+    
+web scrapying 연습문제##################################################
+#스크래핑할 웹 사이트 URL 
+url <- 'https://www.imdb.com/search/title/?count=100&release_date=2019,2019&title_type=feature'
+# https://www.imdb.com/search/title/?count=100&release_date=2018,2018&title_type=feature
+#
+#http://www.imdb.com/search/title?count=100&release_date=2017,2017&title_type=feature
+# 스크래핑할 데이터 - rank, title, description, runtime, genre, rating, metascore, votes, gross_earning_in_Mil, director, actor
+
+
+# 스크래핑한 데이터 pandas의 data.frame으로 변환하여 2017bestfilms.csv파일로 저장  
+
+
+from bs4 import BeautifulSoup
+import requests
+import re
+import pandas as pd
+
+try_to_text = lambda x : x.text if x else None
+url = 'https://www.imdb.com/search/title/?count=100&release_date=2017,2017&title_type=feature'
+res = requests.get(url)
+soup = BeautifulSoup(res.text, 'html.parser')
+df = pd.DataFrame()
+
+for ele in soup.select('.lister-item-content'):
+    # 100개의 (각 영화의 정보를 가지고 있는)엘리먼트에 대한 loop
+    # 딕셔너리에 엘리먼트로부터 수집한 영화 정보를 할당하고 dataframe에
+    # 딕셔너리를 행으로 추가
+
+    # 처리가 간단한 정보는 딕셔너리에 바로 할당
+    row = {
+        'rank': ele.select_one('.lister-item-index').text.replace('.', ''),
+        'title': ele.select_one('.lister-item-header > a').text,
+        'description': ele.select('p.text-muted')[1].text.replace('\n', ' '),
+        'runtime': ele.select_one('.runtime').text[:-4],
+        'genre': ele.select_one('.genre').text,
+        'rating': ele.select_one('.ratings-imdb-rating > strong').text,
+        'metascore': try_to_text(ele.select_one('.metascore')),
+        'votes': None,
+        'gross': None,
+    }
+
+    # 처리가 복잡한 정보는 파싱하여 딕셔너리에 할당
+    votes_n_gross = ele.select_one('.sort-num_votes-visible').get_text()
+    director_n_star = ele.select_one('p:nth-of-type(3)').get_text()
+    pattern = re.compile(r'[\s\n$M]')
+    for data in votes_n_gross.split('|'):
+        key, val = re.sub(pattern, '', data).split(':')
+        row[key.lower()] = float(val.replace(',', ''))
+    for data in director_n_star.split('|'):
+        key, val = data.replace('\n', '').split(':')
+        if 'Directors' in key:
+            key = 'director'
+        row[key.lower().strip()] = val.strip()
+
+    # 딕셔너리를 dataframe의 행으로 추가
+    df = df.append(row, ignore_index=True)
+    
+
+# 1. csv 저장
+df.to_csv('../datas/output/movie2017_info.csv')
+
+
+###########################################################
+import pandas as pd
+import numpy as np
+from bs4 import BeautifulSoup
+import requests
+import re
+ 
+
+#request 모듈 사용
+url = 'http://www.imdb.com/search/title?count=100&release_date=2017,2017&title_type=feature'
+req = requests.get(url)
+html = req.text
+soup = BeautifulSoup(html, 'html.parser')
+
+ 
+#각 컬럼 별 리스트로 저장
+box = soup.select('.lister-item-content')  
+
+#rank
+rank_list = []
+for i in box:
+    textline = i.select_one('h3 > .lister-item-index.unbold.text-primary')
+    textline = textline.text
+    textline = re.sub('[\n.]','',textline)
+    rank_list.append(int(textline))
+print(len(rank_list))
+print(rank_list)
+
+ 
+
+#title
+title_list = []
+for i in box:
+    textline = i.select_one('h3 > a')
+    textline = textline.text
+    title_list.append(textline)
+print(len(title_list))
+print(title_list)
+
+ 
+
+#description
+description_list = []
+for i in box:
+    textline = i.select_one('p.text-muted:nth-of-type(2)')
+    textline = textline.text
+    textline = re.sub('[\n]','',textline)
+    description_list.append(textline)
+print(len(description_list))
+print(description_list)
+
+ 
+
+#runtime
+runtime_list = []
+for i in box:
+    textline = i.select_one('p > .runtime')
+    textline = textline.text
+    textline = re.sub('[min]', '',textline)
+    runtime_list.append(int(textline))
+print(len(runtime_list))
+print(runtime_list)
+
+ 
+
+# genre
+genre_list = []
+for i in box:
+    textline = i.select_one('p > .genre')
+    #print(textline)
+    textline = textline.text
+    textline = re.sub('[\n ]', '',textline)
+    genre_list.append(textline)
+print(len(genre_list))
+print(genre_list)
+ 
+
+#rating
+rating_list = []
+for i in box:
+    textline = i.select_one('.inline-block.ratings-imdb-rating').attrs.get("data-value")
+    rating_list.append(float(textline))
+print(len(rating_list))
+print(rating_list)
+
+ 
+
+#metascore
+metascore_list = []
+for i in box:
+    textline = i.select_one('.metascore')
+    #print(textline)
+    if textline == None:
+        metascore_list.append(0)
+        continue
+    textline = textline.text
+    metascore_list.append(int(textline))
+print(len(metascore_list))
+print(metascore_list)
+
+ 
+
+#vote
+vote_list = []
+for i in box:
+    #textline = i.select_one("p.sort-num_votes-visible > span:nth-child(5)").attrs.get("data-value",0)
+    try:
+        textline = i.select_one('p.sort-num_votes-visible > span:nth-child(2)').attrs.get("data-value")
+    except AttributeError:
+        vote_list.append(0)
+        continue
+    textline = re.sub(',','',textline)
+    vote_list.append(int(textline))
+print(len(vote_list))
+print(vote_list)
+ 
+
+#gross_earning_in_Mil
+gross_earning_in_Mil_list = []
+for i in box:
+    #textline = i.select_one("p.sort-num_votes-visible > span:nth-child(5)").attrs.get("data-value",0)
+    try:
+        textline = i.select_one('p.sort-num_votes-visible > span:nth-child(5)').attrs.get("data-value")
+    except AttributeError:
+        gross_earning_in_Mil_list.append(0)
+        continue
+    textline = re.sub(',','',textline)
+    gross_earning_in_Mil_list.append(int(textline))    
+
+print(len(gross_earning_in_Mil_list))
+print(gross_earning_in_Mil_list)
+
+ 
+
+#actor
+actor_list = []
+for i in box:
+    textline = i.select_one('div.lister-item-content > p:nth-child(5)').get_text()
+    textline = re.sub('[\n]','',textline)
+    list_se = textline.split('Stars:')
+    actor_list.append(list_se[1])    
+
+print(len(actor_list))
+print(actor_list)     
+
+ 
+
+#director
+director_list = []
+for i in box:
+    textline = i.select_one('div.lister-item-content > p:nth-child(5) > a:nth-child(1)')
+    #print(textline)
+    textline = textline.text
+    textline = re.sub('[\n ]', '',textline)
+    director_list.append(textline)    
+
+print(len(director_list))
+print(director_list)      
+
+ 
+
+ 
+
+#영화 데이터 프레임 생성
+movie_df = pd.DataFrame ([ rank_list, title_list, description_list, runtime_list, genre_list, rating_list, metascore_list, vote_list, gross_earning_in_Mil_list, director_list, actor_list])
+columns = ['rank', 'title', 'description', 'runtime', 'genre', 'rating', 'metascore', 'votes', 'gross_earning_in_Mil', 'director', 'actor']
+movie_df = movie_df.T
+
+#컬럼 설정
+movie_df.columns = columns
+
+#인덱스 설정
+movie_df.set_index(['rank'],inplace=True)
+#object -> int 또는 float 형변환
+movie_df[['runtime','metascore','votes','gross_earning_in_Mil']] = movie_df[['runtime','metascore','votes','gross_earning_in_Mil']].astype(int)
+movie_df['rating'] = movie_df['rating'].astype(float)
+
+ 
+
+
